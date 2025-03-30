@@ -1,0 +1,27 @@
+# Configuration for Webmoos UI, API, and Shoreside
+
+services:
+  autonomy:
+    build: ./autonomy
+    restart: "always"
+    ports:
+      - 9000:9000
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.2
+  api:
+    build: ./api
+    restart: "always"
+    ports:
+      - 8000:8000
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.3
+
+networks:
+  staticbridge:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.1.0.0/16
+          gateway: 10.1.0.1
