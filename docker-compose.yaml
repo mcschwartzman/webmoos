@@ -17,6 +17,23 @@ services:
     networks:
       staticbridge:
         ipv4_address: 10.1.0.3
+  mqtt5:
+    image: eclipse-mosquitto
+    ports:
+      - 1883:1884/tcp #default mqtt port exposed out
+      - 9001:9001/tcp #default mqtt port for websockets
+    # network_mode: host
+    volumes:
+      - ./config:/mosquitto/config:rw
+    #   - ./data:/mosquitto/data:rw
+    #   - ./log:/mosquitto/log:rw
+    restart: unless-stopped
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.4
+
+volumes:
+  config:
 
 networks:
   staticbridge:

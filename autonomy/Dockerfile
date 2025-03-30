@@ -1,5 +1,7 @@
 FROM mcschwartzman/moos-ivp-base:latest
 
-WORKDIR /git/moos-ivp/ivp/missions/s1_alpha
+COPY ./missions /missions
 
-CMD [ "/bin/bash", "/git/moos-ivp/ivp/missions/s1_alpha/launch.sh" ]
+WORKDIR /missions/henry_gilda_baseline
+
+CMD [ "/bin/bash", "/missions/henry_gilda_baseline/launch.sh" ]

@@ -7,7 +7,9 @@ RUN apt update \
     && git clone https://github.com/mit2680/moos-ivp-2680.git \
     && git clone https://github.com/moos-ivp/moos-ivp.git \
     && cd moos-ivp \
-    && ./build.sh
+    && ./build.sh \
+    && cd ../.. \
+    && mkdir missions
 
 ENV PATH="$PATH:/git/moos-ivp/bin:/git/moos-ivp/scripts"
 
