@@ -1,0 +1,25 @@
+{
+    "name": "p5-ui-server",
+    "version": "0.0.1",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon index.js",
+        "test": "console.log(\"ERROR: no tests defined\");"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mcschwartzman/webmoos.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/mcschwartzman/webmoos/issues"
+    },
+    "homepage": "https://github.com/mcschwartzman/webmoos#readme",
+    "dependencies": {
+        "express": "^4.18.2",
+        "mqtt": "^5.10.4",
+        "nodemon": "^3.0.1"
+    }
+}
