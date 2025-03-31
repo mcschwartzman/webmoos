@@ -1,4 +1,9 @@
 let nodes;
+let img;
+
+function preload() {
+  img = loadImage('/assets/forrest19.jpg');
+}
 
 async function getData(){
   const response = await fetch("http://localhost:3000/nodes");
@@ -19,69 +24,52 @@ async function getData(){
 function setup() {
 
   createCanvas(1000, 750);
-  background(200);
-  point(20,20);
+
+  let button = createButton('Deploy');
+  button.position(600,0);
+  button.mousePressed(sendDeploy);
 }
 
 function draw() {
-  background(220);
+
+
+  background(200);
+  image(img, 0, 0, 600, 600);
 
   stroke('purple');
   strokeWeight(10);
 
 
-  // getData().then(result=>{
-  //   console.log(result);
-  //   let nodes = result;
-  //   for (const node in nodes){
-  //     let node_dict = nodes[node];
-  //     // console.log(node_dict);
-  //     let x = parseInt(node_dict["X"]);
-  //     let y = parseInt(node_dict["Y"]);
-  //     console.log(x, y);
-  //     point(x, y);
-  //     // point(parseInt(node_dict["X"]), parseInt(node_dict["Y"]));
-  //     // console.log(node_dict["X"], node_dict["Y"]);
-  //   }
-  // });
-
-  // point(100,100);
-  // point(50,100);
-  
   response = fetch("http://localhost:3000/nodes").then(function(response) {
     return response.json();
   }).then(function(data) {
-    // console.log(data);
     nodes = data;
   });
 
   console.log(nodes);
 
+  const x_offset = 250;
+  const y_offset = 120;
+
   for (const node in nodes){
     let node_dict = nodes[node];
-    // console.log(node_dict);
     let x = parseInt(node_dict["X"]);
     let y = -1 * parseInt(node_dict["Y"]);
     console.log(x, y);
-    point(x, y);
-    // point(parseInt(node_dict["X"]), parseInt(node_dict["Y"]));
-    // console.log(node_dict["X"], node_dict["Y"]);
+    point(x + x_offset, y + y_offset);
+
   }
   
 }
 
-// function(response){
-//   let nodes = response;
-//   for (const node in nodes){
-//     let node_dict = nodes[node];
-//     // console.log(node_dict);
-//     let x = parseInt(node_dict["X"]);
-//     let y = parseInt(node_dict["Y"]);
-//     console.log(x, y);
-//     point = {"x": x, "y": y};
-//     point(x, y);
-//     // point(parseInt(node_dict["X"]), parseInt(node_dict["Y"]));
-//     // console.log(node_dict["X"], node_dict["Y"]);
-//   }
-//   // console.log(response);
-// }
+function sendDeploy() {
+
+  fetch('http://localhost:3000/deploy', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({"deploy":"true"})
+  });
+  
+}

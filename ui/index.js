@@ -2,6 +2,7 @@ const express = require('express');
 const mqtt = require("mqtt");
 const client = mqtt.connect("mqtt://10.1.0.4");
 
+
 node_data = {
 };
 
@@ -28,5 +29,44 @@ const server = app.listen(port);
 
 app.use(express.static('public'));
 app.get('/nodes', (req, res) => {
-    res.send(node_data);
+  res.send(node_data);
+});
+app.post('/deploy', (req, res) => {
+
+  let deploy_object = {
+    "name":"DEPLOY_ALL",
+    "value":"true"
+  }
+  let override_object = {
+    "name":"MOOS_MANUAL_OVERRIDE_ALL",
+    "value":"false"
+  }
+  let return_object = {
+    "name":"RETURN_ALL",
+    "value":"false"
+  }
+
+  fetch('http://localhost:8000/post-moosvar', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(deploy_object)
+  });
+  fetch('http://localhost:8000/post-moosvar', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(override_object)
+  });
+  fetch('http://localhost:8000/post-moosvar', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(return_object)
+  });
+
+  res.send({"success":"true"});
 });
