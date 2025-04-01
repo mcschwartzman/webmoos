@@ -1,0 +1,4 @@
+ui/node_modules
+**/*LOG_*
+**/targ_*
+**/.LastOpenedMOOSLogDirectory

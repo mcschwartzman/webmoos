@@ -28,15 +28,17 @@ function setup() {
   let button = createButton('Deploy');
   button.position(600,0);
   button.mousePressed(sendDeploy);
+
+  let returnButton = createButton('Return');
+  returnButton.position(600,25);
+  returnButton.mousePressed(sendReturn);
 }
 
 function draw() {
 
-
   background(200);
   image(img, 0, 0, 600, 600);
 
-  stroke('purple');
   strokeWeight(10);
 
 
@@ -46,8 +48,6 @@ function draw() {
     nodes = data;
   });
 
-  console.log(nodes);
-
   const x_offset = 250;
   const y_offset = 120;
 
@@ -55,7 +55,7 @@ function draw() {
     let node_dict = nodes[node];
     let x = parseInt(node_dict["X"]);
     let y = -1 * parseInt(node_dict["Y"]);
-    console.log(x, y);
+    stroke(node_dict["COLOR"]);
     point(x + x_offset, y + y_offset);
 
   }
@@ -70,6 +70,18 @@ function sendDeploy() {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({"deploy":"true"})
+  });
+  
+}
+
+function sendReturn() {
+
+  fetch('http://localhost:3000/return', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({"return":"true"})
   });
   
 }

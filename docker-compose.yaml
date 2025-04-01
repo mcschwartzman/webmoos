@@ -9,6 +9,8 @@ services:
     networks:
       staticbridge:
         ipv4_address: 10.1.0.2
+    environment:
+      TIMEWARP: "10"
   api:
     build: ./api
     restart: "always"
@@ -31,6 +33,14 @@ services:
     networks:
       staticbridge:
         ipv4_address: 10.1.0.4
+  ui:
+    build: ./ui
+    restart: "always"
+    ports:
+      - 3000:3000
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.5
 
 volumes:
   config:

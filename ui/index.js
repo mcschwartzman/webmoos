@@ -2,6 +2,9 @@ const express = require('express');
 const mqtt = require("mqtt");
 const client = mqtt.connect("mqtt://10.1.0.4");
 
+const server_host = "10.1.0.3";
+const rest_port = 8000
+const post_uri = "http://" + server_host + ":" + rest_port + "/post-moosvar"
 
 node_data = {
 };
@@ -16,7 +19,6 @@ client.on("connect", () => {
 });
 
 client.on("message", (topic, message) => {
-  console.log(message.toString());
   dict = JSON.parse(message.toString());
   node_data[dict["NAME"]] = dict;
 });
@@ -46,21 +48,39 @@ app.post('/deploy', (req, res) => {
     "value":"false"
   }
 
-  fetch('http://localhost:8000/post-moosvar', {
+  fetch(post_uri, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(deploy_object)
   });
-  fetch('http://localhost:8000/post-moosvar', {
+  fetch(post_uri, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(override_object)
   });
-  fetch('http://localhost:8000/post-moosvar', {
+  fetch(post_uri, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(return_object)
+  });
+
+  res.send({"success":"true"});
+});
+
+app.post('/return', (req, res) => {
+
+  let return_object = {
+    "name":"RETURN_ALL",
+    "value":"true"
+  }
+
+  fetch(post_uri, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
