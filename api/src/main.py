@@ -1,9 +1,16 @@
 from fastapi import FastAPI
-from moos_client import MoosClient
-from moosvar import MoosVar
+from .moos_client import MoosClient
+from .moosvar import MoosVar
 
+from config.app_settings import *
+
+settings = Settings()
 app = FastAPI()
-client = MoosClient('10.1.0.2', 9000)
+
+address = settings.autonomy_address
+port = settings.autonomy_port
+
+client = MoosClient(address, port)
 
 @app.get("/")
 def read_root():
