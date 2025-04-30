@@ -1,16 +1,44 @@
 # Configuration for Webmoos UI, API, and Shoreside
 
 services:
-  # autonomy:
+  shoreside:
+    build: ./autonomy
+    restart: "always"
+    ports:
+      - 9000:9000
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.2
+    environment:
+      TIMEWARP: "10"
+      MPORT: 9000
+      PSHARE: 9200
+  henry:
+    build: ./autonomy
+    restart: "always"
+    ports:
+      - 9001:9001
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.21
+    environment:
+      TIMEWARP: "10"
+      MPORT: 9001
+      PSHARE: 9201
+      VNAME: henry
+  # gilda:
   #   build: ./autonomy
   #   restart: "always"
   #   ports:
-  #     - 9000:9000
+  #     - 9002:9002
   #   networks:
   #     staticbridge:
-  #       ipv4_address: 10.1.0.2
+  #       ipv4_address: 10.1.0.22
   #   environment:
   #     TIMEWARP: "10"
+  #     MPORT: 9002
+  #     PSHARE: 9202
+  #     VNAME: gilda
   api:
     build: ./api
     restart: "always"
@@ -23,7 +51,6 @@ services:
     image: eclipse-mosquitto
     ports:
       - 1883:1884/tcp #default mqtt port exposed out
-      - 9001:9001/tcp #default mqtt port for websockets
     # network_mode: host
     volumes:
       - ./config:/mosquitto/config:rw
