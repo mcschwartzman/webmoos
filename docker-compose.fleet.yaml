@@ -13,6 +13,9 @@ services:
       TIMEWARP: "10"
       MPORT: 9000
       PSHARE: 9200
+    volumes:
+      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
+      - ../moos-ivp-2680:/git/moos-ivp-2680
   henry:
     build: ./autonomy
     restart: "always"
@@ -26,19 +29,32 @@ services:
       MPORT: 9001
       PSHARE: 9201
       VNAME: henry
-  # gilda:
-  #   build: ./autonomy
-  #   restart: "always"
-  #   ports:
-  #     - 9002:9002
-  #   networks:
-  #     staticbridge:
-  #       ipv4_address: 10.1.0.22
-  #   environment:
-  #     TIMEWARP: "10"
-  #     MPORT: 9002
-  #     PSHARE: 9202
-  #     VNAME: gilda
+      VIP: 10.1.0.21
+      VROLE: rescue
+      TMATE: gilda
+    volumes:
+      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
+      - ../moos-ivp-2680:/git/moos-ivp-2680
+  gilda:
+    build: ./autonomy
+    restart: "always"
+    ports:
+      - 9002:9002
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.22
+    environment:
+      TIMEWARP: "10"
+      MPORT: 9002
+      PSHARE: 9202
+      VNAME: gilda
+      VIP: 10.1.0.22
+      VROLE: scout
+      TMATE: henry
+      IVP_BEHAVIOR_DIRS: /git/moos-ivp-mcschwar/lib
+    volumes:
+      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
+      - ../moos-ivp-2680:/git/moos-ivp-2680
   api:
     build: ./api
     restart: "always"
