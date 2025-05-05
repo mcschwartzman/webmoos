@@ -2,10 +2,9 @@
 
 cd /git/moos-ivp-2680/missions/lab_14_rescue_baseline
 
-export PATH="$PATH:/git/moos-ivp-mcschwar/bin"
-export PATH="$PATH:/git/moos-ivp-mcschwar/lib"
 export PATH="$PATH:/git/moos-ivp-2680/bin"
-export IVP_BEHAVIOR_DIRS="/git/moos-ivp-mcschwar/lib"
+export PATH="$PATH:$EXTENDBIN"
+export PATH="$PATH:$EXTENDLIB"
 
 # check some env vars
 if [[ $VNAME == "" ]];

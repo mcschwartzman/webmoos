@@ -16,7 +16,7 @@ services:
     volumes:
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
       - ../moos-ivp-2680:/git/moos-ivp-2680
-  henry:
+  clayton:
     build: ./autonomy
     restart: "always"
     ports:
@@ -28,14 +28,17 @@ services:
       TIMEWARP: "10"
       MPORT: 9001
       PSHARE: 9201
-      VNAME: henry
+      VNAME: clayton
       VIP: 10.1.0.21
       VROLE: rescue
-      TMATE: gilda
+      TMATE: mathew
+      EXTENDBIN: /git/moos-ivp-mcschwar/bin
+      EXTENDLIB: /git/moos-ivp-mcschwar/lib
     volumes:
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
       - ../moos-ivp-2680:/git/moos-ivp-2680
-  gilda:
+      - ../moos-ivp-cdembski:/git/moos-ivp-cdembski
+  mathew:
     build: ./autonomy
     restart: "always"
     ports:
@@ -47,14 +50,62 @@ services:
       TIMEWARP: "10"
       MPORT: 9002
       PSHARE: 9202
-      VNAME: gilda
+      VNAME: mathew
       VIP: 10.1.0.22
       VROLE: scout
-      TMATE: henry
+      TMATE: clayton
       IVP_BEHAVIOR_DIRS: /git/moos-ivp-mcschwar/lib
+      EXTENDBIN: /git/moos-ivp-mcschwar/bin
+      EXTENDLIB: /git/moos-ivp-mcschwar/lib
     volumes:
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
       - ../moos-ivp-2680:/git/moos-ivp-2680
+  jeremy:
+    build: ./autonomy
+    restart: "always"
+    ports:
+      - 9003:9003
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.23
+    environment:
+      TIMEWARP: "10"
+      MPORT: 9003
+      PSHARE: 9203
+      VNAME: jeremy
+      VIP: 10.1.0.23
+      VROLE: rescue
+      TMATE: josh
+      IVP_BEHAVIOR_DIRS: /git/moos-ivp-2680/lib
+      BASE: "true"
+      EXTENDBIN: /git/moos-ivp-mcschwar/bin
+      EXTENDLIB: /git/moos-ivp-mcschwar/lib
+    volumes:
+      - ../moos-ivp-2680:/git/moos-ivp-2680
+      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
+  josh:
+    build: ./autonomy
+    restart: "always"
+    ports:
+      - 9004:9004
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.24
+    environment:
+      TIMEWARP: "10"
+      MPORT: 9004
+      PSHARE: 9204
+      VNAME: josh
+      VIP: 10.1.0.24
+      VROLE: scout
+      TMATE: jeremy
+      IVP_BEHAVIOR_DIRS: /git/moos-ivp-2680/lib
+      BASE: "true"
+      EXTENDBIN: /git/moos-ivp-mcschwar/bin
+      EXTENDLIB: /git/moos-ivp-mcschwar/lib
+    volumes:
+      - ../moos-ivp-2680:/git/moos-ivp-2680
+      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
   api:
     build: ./api
     restart: "always"
