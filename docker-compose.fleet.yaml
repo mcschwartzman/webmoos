@@ -10,12 +10,14 @@ services:
       staticbridge:
         ipv4_address: 10.1.0.2
     environment:
-      TIMEWARP: "10"
       MPORT: 9000
       PSHARE: 9200
     volumes:
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
       - ../moos-ivp-2680:/git/moos-ivp-2680
+    env_file:
+      - path: ./globals.env
+        required: true
   clayton:
     build: ./autonomy
     restart: "always"
@@ -25,7 +27,6 @@ services:
       staticbridge:
         ipv4_address: 10.1.0.21
     environment:
-      TIMEWARP: "10"
       MPORT: 9001
       PSHARE: 9201
       VNAME: clayton
@@ -38,6 +39,9 @@ services:
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
       - ../moos-ivp-2680:/git/moos-ivp-2680
       - ../moos-ivp-cdembski:/git/moos-ivp-cdembski
+    env_file:
+      - path: ./globals.env
+        required: true
   mathew:
     build: ./autonomy
     restart: "always"
@@ -47,7 +51,6 @@ services:
       staticbridge:
         ipv4_address: 10.1.0.22
     environment:
-      TIMEWARP: "10"
       MPORT: 9002
       PSHARE: 9202
       VNAME: mathew
@@ -60,6 +63,9 @@ services:
     volumes:
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
       - ../moos-ivp-2680:/git/moos-ivp-2680
+    env_file:
+      - path: ./globals.env
+        required: true
   jeremy:
     build: ./autonomy
     restart: "always"
@@ -69,7 +75,6 @@ services:
       staticbridge:
         ipv4_address: 10.1.0.23
     environment:
-      TIMEWARP: "10"
       MPORT: 9003
       PSHARE: 9203
       VNAME: jeremy
@@ -83,6 +88,9 @@ services:
     volumes:
       - ../moos-ivp-2680:/git/moos-ivp-2680
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
+    env_file:
+      - path: ./globals.env
+        required: true
   josh:
     build: ./autonomy
     restart: "always"
@@ -92,7 +100,6 @@ services:
       staticbridge:
         ipv4_address: 10.1.0.24
     environment:
-      TIMEWARP: "10"
       MPORT: 9004
       PSHARE: 9204
       VNAME: josh
@@ -106,35 +113,9 @@ services:
     volumes:
       - ../moos-ivp-2680:/git/moos-ivp-2680
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
-  api:
-    build: ./api
-    restart: "always"
-    ports:
-      - 8000:8000
-    networks:
-      staticbridge:
-        ipv4_address: 10.1.0.3
-  mqtt5:
-    image: eclipse-mosquitto
-    ports:
-      - 1883:1884/tcp #default mqtt port exposed out
-    # network_mode: host
-    volumes:
-      - ./config:/mosquitto/config:rw
-    #   - ./data:/mosquitto/data:rw
-    #   - ./log:/mosquitto/log:rw
-    restart: unless-stopped
-    networks:
-      staticbridge:
-        ipv4_address: 10.1.0.4
-  ui:
-    build: ./ui
-    restart: "always"
-    ports:
-      - 3000:3000
-    networks:
-      staticbridge:
-        ipv4_address: 10.1.0.5
+    env_file:
+      - path: ./globals.env
+        required: true
 
 volumes:
   config:
