@@ -33,8 +33,9 @@ services:
       VIP: 10.1.0.21
       VROLE: rescue
       TMATE: mathew
-      EXTENDBIN: /git/moos-ivp-mcschwar/bin
+      EXTENDBIN: /git/moos-ivp-cdembski/bin
       EXTENDLIB: /git/moos-ivp-mcschwar/lib
+      START_POS: "4,-7,135"
     volumes:
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
       - ../moos-ivp-2680:/git/moos-ivp-2680
@@ -60,6 +61,7 @@ services:
       IVP_BEHAVIOR_DIRS: /git/moos-ivp-mcschwar/lib
       EXTENDBIN: /git/moos-ivp-mcschwar/bin
       EXTENDLIB: /git/moos-ivp-mcschwar/lib
+      START_POS: "-12,-15,135"
     volumes:
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
       - ../moos-ivp-2680:/git/moos-ivp-2680
@@ -85,6 +87,7 @@ services:
       BASE: "true"
       EXTENDBIN: /git/moos-ivp-mcschwar/bin
       EXTENDLIB: /git/moos-ivp-mcschwar/lib
+      START_POS: "-23,-20,135"
     volumes:
       - ../moos-ivp-2680:/git/moos-ivp-2680
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
@@ -110,6 +113,7 @@ services:
       BASE: "true"
       EXTENDBIN: /git/moos-ivp-mcschwar/bin
       EXTENDLIB: /git/moos-ivp-mcschwar/lib
+      START_POS: "-34,-24,135"
     volumes:
       - ../moos-ivp-2680:/git/moos-ivp-2680
       - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar

@@ -15,5 +15,5 @@ then
 else
     # otherwise run this with the vname
     echo "running vehicle ($VNAME)"
-    ./launch_vehicle.sh --vname=$VNAME --mport=$MPORT --sim --pshare=$PSHARE --ip=$VIP --vrole=$VROLE --tmate=$TMATE --shore=10.1.0.2 $TIMEWARP
+    ./launch_vehicle.sh --vname=$VNAME --mport=$MPORT --sim --pshare=$PSHARE --ip=$VIP --vrole=$VROLE --tmate=$TMATE --shore=10.1.0.2 --start_pos=$START_POS $TIMEWARP
 fi;

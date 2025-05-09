@@ -13,3 +13,5 @@ Individual components (the web ui, the api, and the MOOS-IvP autonomy system) ca
 
 ### Fleet Configuration
 The base docker-compose file provides a simple example 2-vehicle mission with all MOOS communities run in the autonomy container, but the `docker-compose.fleet.yaml` file provides a more distributed approach, with individual vehicles defined in their own docker containers.
+
+The base fleet configuration was written with the MIT Marine Autonomy Lab Swimmer Rescue scenario in mind and should make it a little easier to run alternative autonomy setups. You can copy the `autonomy` directory with alternative libs and bins to test out other versions of behaviors and MOOS apps.
