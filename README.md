@@ -14,4 +14,6 @@ Individual components (the web ui, the api, and the MOOS-IvP autonomy system) ca
 ### Fleet Configuration
 The base docker-compose file provides a simple example 2-vehicle mission with all MOOS communities run in the autonomy container, but the `docker-compose.fleet.yaml` file provides a more distributed approach, with individual vehicles defined in their own docker containers.
 
-The base fleet configuration was written with the MIT Marine Autonomy Lab Swimmer Rescue scenario in mind and should make it a little easier to run alternative autonomy setups. You can copy the `autonomy` directory with alternative libs and bins to test out other versions of behaviors and MOOS apps.
+The base fleet configuration was written with the MIT Marine Autonomy Lab Swimmer Rescue scenario in mind and should make it a little easier to run alternative autonomy setups. You can either copy the `autonomy` directory to test out other behaviors or apps, or you can simply clone this repo to the same directory as your `moos-ivp-extend`, and map that in your docker-compose file.
+
+Each vehicle container (Clayton, Mathew, Jeremy, Josh) has an `EXTENDLIB` and `EXTENDBIN` env var that defines the path for additional executables and behavior libraries you may want to use in your sijmulation. By default, those files must also be mounted in the container `volumes` option. Variables that should be the same across MOOS communities (like `TIMEWARP`) can be defined in the `globals.env` file.

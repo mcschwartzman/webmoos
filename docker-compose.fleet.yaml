@@ -13,7 +13,6 @@ services:
       MPORT: 9000
       PSHARE: 9200
     volumes:
-      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
       - ../moos-ivp-2680:/git/moos-ivp-2680
     env_file:
       - path: ./globals.env
@@ -34,10 +33,9 @@ services:
       VROLE: rescue
       TMATE: mathew
       EXTENDBIN: /git/moos-ivp-cdembski/bin
-      EXTENDLIB: /git/moos-ivp-mcschwar/lib
+      EXTENDLIB: /git/moos-ivp-2680/lib
       START_POS: "4,-7,135"
     volumes:
-      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
       - ../moos-ivp-2680:/git/moos-ivp-2680
       - ../moos-ivp-cdembski:/git/moos-ivp-cdembski
     env_file:
@@ -85,8 +83,8 @@ services:
       TMATE: josh
       IVP_BEHAVIOR_DIRS: /git/moos-ivp-2680/lib
       BASE: "true"
-      EXTENDBIN: /git/moos-ivp-mcschwar/bin
-      EXTENDLIB: /git/moos-ivp-mcschwar/lib
+      EXTENDBIN: /git/moos-ivp-mcshwar/bin
+      EXTENDLIB: /git/moos-ivp-2680/lib
       START_POS: "-23,-20,135"
     volumes:
       - ../moos-ivp-2680:/git/moos-ivp-2680
@@ -111,12 +109,11 @@ services:
       TMATE: jeremy
       IVP_BEHAVIOR_DIRS: /git/moos-ivp-2680/lib
       BASE: "true"
-      EXTENDBIN: /git/moos-ivp-mcschwar/bin
-      EXTENDLIB: /git/moos-ivp-mcschwar/lib
+      EXTENDBIN: /git/moos-ivp-2680/bin
+      EXTENDLIB: /git/moos-ivp-2680/lib
       START_POS: "-34,-24,135"
     volumes:
       - ../moos-ivp-2680:/git/moos-ivp-2680
-      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
     env_file:
       - path: ./globals.env
         required: true
