@@ -1,36 +1,6 @@
 # Configuration for Webmoos UI, API, and Shoreside
 
 services:
-  ui:
-    build: ./ui
-    restart: "always"
-    ports:
-      - 3000:3000
-    networks:
-      staticbridge:
-        ipv4_address: 10.1.0.5
-  api:
-    build: ./api
-    restart: "always"
-    ports:
-      - 8000:8000
-    networks:
-      staticbridge:
-        ipv4_address: 10.1.0.3
-  mqtt5:
-    image: eclipse-mosquitto
-    ports:
-      - 1883:1884/tcp #default mqtt port exposed out
-      - 9901:9901/tcp #default mqtt port for websockets
-    # network_mode: host
-    volumes:
-      - ./config:/mosquitto/config:rw
-    #   - ./data:/mosquitto/data:rw
-    #   - ./log:/mosquitto/log:rw
-    restart: unless-stopped
-    networks:
-      staticbridge:
-        ipv4_address: 10.1.0.4
   shoreside:
     build: ./autonomy
     restart: "always"
@@ -62,12 +32,12 @@ services:
       VIP: 10.1.0.21
       VROLE: rescue
       TMATE: mathew
-      EXTENDBIN: /git/moos-ivp-cdembski/bin
+      EXTENDBIN: /git/moos-ivp-charlie-github/bin
       EXTENDLIB: /git/moos-ivp-2680/lib
       START_POS: "4,-7,135"
     volumes:
+      - ../moos-ivp-charlie-github:/git/moos-ivp-charlie-github
       - ../moos-ivp-2680:/git/moos-ivp-2680
-      - ../moos-ivp-cdembski:/git/moos-ivp-cdembski
     env_file:
       - path: ./globals.env
         required: true
@@ -86,12 +56,12 @@ services:
       VIP: 10.1.0.22
       VROLE: scout
       TMATE: clayton
-      IVP_BEHAVIOR_DIRS: /git/moos-ivp-mcschwar/lib
-      EXTENDBIN: /git/moos-ivp-mcschwar/bin
-      EXTENDLIB: /git/moos-ivp-mcschwar/lib
+      IVP_BEHAVIOR_DIRS: /git/moos-ivp-charlie-github/lib
+      EXTENDBIN: /git/moos-ivp-charlie-github/bin
+      EXTENDLIB: /git/moos-ivp-2680/lib
       START_POS: "-12,-15,135"
     volumes:
-      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
+      - ../moos-ivp-charlie-github:/git/moos-ivp-charlie-github
       - ../moos-ivp-2680:/git/moos-ivp-2680
     env_file:
       - path: ./globals.env
@@ -113,12 +83,12 @@ services:
       TMATE: josh
       IVP_BEHAVIOR_DIRS: /git/moos-ivp-2680/lib
       BASE: "true"
-      EXTENDBIN: /git/moos-ivp-mcshwar/bin
+      EXTENDBIN: /git/moos-ivp-charlie-github/bin
       EXTENDLIB: /git/moos-ivp-2680/lib
       START_POS: "-23,-20,135"
     volumes:
+      - ../moos-ivp-charlie-github:/git/moos-ivp-charlie-github
       - ../moos-ivp-2680:/git/moos-ivp-2680
-      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
     env_file:
       - path: ./globals.env
         required: true
@@ -139,10 +109,11 @@ services:
       TMATE: jeremy
       IVP_BEHAVIOR_DIRS: /git/moos-ivp-2680/lib
       BASE: "true"
-      EXTENDBIN: /git/moos-ivp-2680/bin
+      EXTENDBIN: /git/moos-ivp-charlie-github/bin
       EXTENDLIB: /git/moos-ivp-2680/lib
       START_POS: "-34,-24,135"
     volumes:
+      - ../moos-ivp-charlie-github:/git/moos-ivp-charlie-github
       - ../moos-ivp-2680:/git/moos-ivp-2680
     env_file:
       - path: ./globals.env

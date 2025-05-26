@@ -2,7 +2,7 @@ let nodes;
 let img;
 
 function preload() {
-  img = loadImage('/assets/forrest19.jpg');
+  img = loadImage('/assets/MIT_SP.jpg');
 }
 
 async function getData(){
@@ -37,7 +37,7 @@ function setup() {
 function draw() {
 
   background(200);
-  image(img, 0, 0, 600, 600);
+  image(img, 0, 0, 1000, 600);
 
   strokeWeight(10);
 
@@ -48,8 +48,8 @@ function draw() {
     nodes = data;
   });
 
-  const x_offset = 250;
-  const y_offset = 120;
+  const x_offset = 500;
+  const y_offset = 180;
 
   for (const node in nodes){
     let node_dict = nodes[node];

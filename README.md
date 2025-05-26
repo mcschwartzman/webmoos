@@ -7,6 +7,12 @@ WebMOOS adds a simple Python-based FastAPI app that serves as a bridge between t
 
 Individual components (the web ui, the api, and the MOOS-IvP autonomy system) can be individually run on bare-metal if desired.
 
+You can debug the mqtt server by subscribing to the node-report topic to ensure you're receiving node telemetry.
+
+```
+mosquitto_sub -h 10.1.0.4 -p 1883 -t node-report
+```
+
 ## MOOS-IvP
 [MOOS-IvP](https://oceanai.mit.edu/moos-ivp/pmwiki/pmwiki.php) is a lightweight middleware and behavior-based autonomy architecture maintained by the MIT Marine Autonomy lab. 
 
@@ -16,3 +22,15 @@ The base docker-compose file provides a simple example 2-vehicle mission with al
 The base fleet configuration was written with the MIT Marine Autonomy Lab Swimmer Rescue scenario in mind and should make it a little easier to run alternative autonomy setups. You can either copy the `autonomy` directory to test out other behaviors or apps, or you can simply clone this repo to the same directory as your `moos-ivp-2680` and `moos-ivp-extend` repos, and map them in your docker-compose file.
 
 Each vehicle container (clayton, mathew, jeremy, josh) has an `EXTENDLIB` and `EXTENDBIN` env var that defines the path for additional executables and behavior libraries you may want to use in your simulation. By default, those files must also be mounted in the container `volumes` option. Variables that should be the same across MOOS communities (like `TIMEWARP`) can be defined in the `globals.env` file.
+
+| Variable  | Description                   | Example                    |
+|-----------|-------------------------------|----------------------------|
+| MPORT     | Port to run MOOSDB on         | 9001                       |
+| PSHARE    | Port for pshare route         | 9201                       |
+| VIP       | Vehicle IP address            | 10.1.0.21                  |
+| VNAME     | Vehicle name                  | clayton                    |
+| VROLE     | Vehicle role                  | rescue                     |
+| TMATE     | Teammate vehicle              | mathew                     |
+| START_POS | Comma separated x,y,heading   | 4,-7,135                   |
+| EXTENDBIN | Directory for extend binaries | /git/moos-ivp-mcschwar/bin |
+| EXTENDLIB | Directory for behavior libs   | /git/moos-ivp-mcschwar/lib |
