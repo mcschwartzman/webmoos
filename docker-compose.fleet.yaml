@@ -113,7 +113,7 @@ services:
       TMATE: josh
       IVP_BEHAVIOR_DIRS: /git/moos-ivp-2680/lib
       BASE: "true"
-      EXTENDBIN: /git/moos-ivp-mcshwar/bin
+      EXTENDBIN: /git/moos-ivp-mcschwar/bin
       EXTENDLIB: /git/moos-ivp-2680/lib
       START_POS: "-23,-20,135"
     volumes:
