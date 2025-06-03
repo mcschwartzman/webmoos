@@ -34,3 +34,8 @@ Each vehicle container (clayton, mathew, jeremy, josh) has an `EXTENDLIB` and `E
 | START_POS | Comma separated x,y,heading   | 4,-7,135                   |
 | EXTENDBIN | Directory for extend binaries | /git/moos-ivp-mcschwar/bin |
 | EXTENDLIB | Directory for behavior libs   | /git/moos-ivp-mcschwar/lib |
+
+
+## To-do
+- Make convenience script for killing all images/containers
+- Upload cross-platform images
