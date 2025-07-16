@@ -13,6 +13,10 @@ You can debug the mqtt server by subscribing to the node-report topic to ensure 
 mosquitto_sub -h 10.1.0.4 -p 1883 -t node-report
 ```
 
+## First-time Setup
+Make sure docker and docker compose v2 are installed. Create the docker network with
+`docker network create -d bridge staticbridge`
+
 ## MOOS-IvP
 [MOOS-IvP](https://oceanai.mit.edu/moos-ivp/pmwiki/pmwiki.php) is a lightweight middleware and behavior-based autonomy architecture maintained by the MIT Marine Autonomy lab. 
 
