@@ -32,11 +32,12 @@ services:
       VIP: 10.1.0.21
       VROLE: rescue
       TMATE: mathew
-      EXTENDBIN: /git/moos-ivp-2680/bin
+      EXTENDBIN: /git/moos-ivp-2680/bin:/git/moos-ivp-mcschwar/bin
       EXTENDLIB: /git/moos-ivp-2680/lib
       START_POS: "4,-7,135"
     volumes:
       - ../moos-ivp-2680:/git/moos-ivp-2680
+      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
     env_file:
       - path: ./globals.env
         required: true
@@ -81,11 +82,12 @@ services:
       TMATE: josh
       IVP_BEHAVIOR_DIRS: /git/moos-ivp-2680/lib
       BASE: "true"
-      EXTENDBIN: /git/moos-ivp-2680/bin
+      EXTENDBIN: /git/moos-ivp-2680/bin:/git/moos-ivp-mcschwar/bin
       EXTENDLIB: /git/moos-ivp-2680/lib
       START_POS: "-23,-20,135"
     volumes:
       - ../moos-ivp-2680:/git/moos-ivp-2680
+      - ../moos-ivp-mcschwar:/git/moos-ivp-mcschwar
     env_file:
       - path: ./globals.env
         required: true
