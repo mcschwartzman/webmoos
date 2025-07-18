@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose -f docker-compose.mathew.yaml convert
+    kompose.version: 1.36.0 (ae2a39403)
+  labels:
+    io.kompose.service: josh
+  name: josh
+spec:
+  ports:
+    - name: "9004"
+      port: 9004
+      targetPort: 9004
+  selector:
+    io.kompose.service: josh

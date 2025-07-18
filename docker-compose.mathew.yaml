@@ -2,7 +2,7 @@
 
 services:
   shoreside:
-    build: ./autonomy
+    image: mcschwartzman/webmoos-community:latest
     restart: "always"
     ports:
       - 9000:9000
@@ -18,7 +18,7 @@ services:
       - path: ./globals.env
         required: true
   clayton:
-    build: ./autonomy
+    image: mcschwartzman/webmoos-community:latest
     restart: "always"
     ports:
       - 9001:9001
@@ -42,7 +42,7 @@ services:
       - path: ./globals.env
         required: true
   mathew:
-    build: ./autonomy
+    image: mcschwartzman/webmoos-community:latest
     restart: "always"
     ports:
       - 9002:9002
@@ -66,7 +66,7 @@ services:
       - path: ./globals.env
         required: true
   jeremy:
-    build: ./autonomy
+    image: mcschwartzman/webmoos-community:latest
     restart: "always"
     ports:
       - 9003:9003
@@ -92,7 +92,7 @@ services:
       - path: ./globals.env
         required: true
   josh:
-    build: ./autonomy
+    image: mcschwartzman/webmoos-community:latest
     restart: "always"
     ports:
       - 9004:9004

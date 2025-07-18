@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose -f docker-compose.mathew.yaml convert
+    kompose.version: 1.36.0 (ae2a39403)
+  labels:
+    io.kompose.service: clayton
+  name: clayton
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: clayton
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose -f docker-compose.mathew.yaml convert
+        kompose.version: 1.36.0 (ae2a39403)
+      labels:
+        io.kompose.service: clayton
+    spec:
+      containers:
+        - env:
+            - name: EXTENDBIN
+              value: /git/moos-ivp-2680/bin:/git/moos-ivp-mcschwar/bin
+            - name: EXTENDLIB
+              value: /git/moos-ivp-2680/lib
+            - name: MPORT
+              value: "9001"
+            - name: PSHARE
+              value: "9201"
+            - name: START_POS
+              value: 4,-7,135
+            - name: TMATE
+              value: mathew
+            - name: VIP
+              value: 10.1.0.21
+            - name: VNAME
+              value: clayton
+            - name: VROLE
+              value: rescue
+          envFrom:
+            - configMapRef:
+                name: globals-env
+          image: clayton
+          name: clayton
+          ports:
+            - containerPort: 9001
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /git/moos-ivp-2680
+              name: clayton-cm0
+            - mountPath: /git/moos-ivp-mcschwar
+              name: clayton-cm1
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            name: clayton-cm0
+          name: clayton-cm0
+        - configMap:
+            name: clayton-cm1
+          name: clayton-cm1

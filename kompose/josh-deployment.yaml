@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose -f docker-compose.mathew.yaml convert
+    kompose.version: 1.36.0 (ae2a39403)
+  labels:
+    io.kompose.service: josh
+  name: josh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: josh
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose -f docker-compose.mathew.yaml convert
+        kompose.version: 1.36.0 (ae2a39403)
+      labels:
+        io.kompose.service: josh
+    spec:
+      containers:
+        - env:
+            - name: BASE
+              value: "true"
+            - name: EXTENDBIN
+              value: /git/moos-ivp-2680/bin
+            - name: EXTENDLIB
+              value: /git/moos-ivp-2680/lib
+            - name: IVP_BEHAVIOR_DIRS
+              value: /git/moos-ivp-2680/lib
+            - name: MPORT
+              value: "9004"
+            - name: PSHARE
+              value: "9204"
+            - name: START_POS
+              value: -34,-24,135
+            - name: TMATE
+              value: jeremy
+            - name: VIP
+              value: 10.1.0.24
+            - name: VNAME
+              value: josh
+            - name: VROLE
+              value: scout
+          envFrom:
+            - configMapRef:
+                name: globals-env
+          image: josh
+          name: josh
+          ports:
+            - containerPort: 9004
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /git/moos-ivp-2680
+              name: josh-cm0
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            name: josh-cm0
+          name: josh-cm0
