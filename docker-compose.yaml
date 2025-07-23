@@ -1,54 +1,22 @@
-# Configuration for Webmoos UI, API, and Shoreside
-
 services:
-  autonomy:
-    build: ./autonomy
+  shoreside:
+    image: mcschwartzman/webmoos-community:latest
     restart: "always"
-    ports:
-      - 9000:9000
-    networks:
-      staticbridge:
-        ipv4_address: 10.1.0.2
+    network_mode: host
     environment:
-      TIMEWARP: "10"
-  api:
-    build: ./api
+      SHORE_MPORT: 9000
+      SHORE_PSHARE: 9200
+      SHORE: localhost
+  clayton:
+    image: mcschwartzman/webmoos-community:latest
     restart: "always"
-    ports:
-      - 8000:8000
-    networks:
-      staticbridge:
-        ipv4_address: 10.1.0.3
-  mqtt5:
-    image: eclipse-mosquitto
-    ports:
-      - 1883:1884/tcp #default mqtt port exposed out
-      - 9001:9001/tcp #default mqtt port for websockets
-    # network_mode: host
-    volumes:
-      - ./config:/mosquitto/config:rw
-    #   - ./data:/mosquitto/data:rw
-    #   - ./log:/mosquitto/log:rw
-    restart: unless-stopped
-    networks:
-      staticbridge:
-        ipv4_address: 10.1.0.4
-  ui:
-    build: ./ui
-    restart: "always"
-    ports:
-      - 3000:3000
-    networks:
-      staticbridge:
-        ipv4_address: 10.1.0.5
-
-volumes:
-  config:
-
-networks:
-  staticbridge:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.1.0.0/16
-          gateway: 10.1.0.1
+    network_mode: host
+    environment:
+      MPORT: 9001
+      PSHARE: 9201
+      VNAME: clayton
+      VIP: localhost
+      VROLE: rescue
+      TMATE: mathew
+      START_POS: "4,-7,135"
+      SHORE: localhost

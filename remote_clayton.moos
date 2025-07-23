@@ -1,0 +1,97 @@
+ServerHost = ${CLAYTON_IP}
+ServerPort = 9001
+Community  = clayton
+
+ProcessConfig = ANTLER
+{
+    Run = pMarineViewer @ NewConsole = false
+}
+
+//--------------------------------------------------------
+// pMarineViewer config block
+
+ProcessConfig = pMarineViewer
+{
+  AppTick    = 4
+  CommsTick  = 4
+
+	app_logging = true
+	
+  //tiff_file            = forrest19.tif
+  tiff_file            = MIT_SP.tif
+  set_pan_x            = 46
+  set_pan_y            = -260
+  zoom                 = 1.5
+  vehicles_shape_scale = 1.0
+  vehicles_name_mode   = names+shortmode
+
+	procs_font_size = medium
+	nodes_font_size = medium
+	infocast_font_size = medium
+	
+  polygon_viewable_all    = true
+  polygon_viewable_labels = false
+  seglist_viewable_all    = true
+  seglist_viewable_labels = false
+  point_viewable_all    = true
+  point_viewable_labels = true
+
+  left_context[unreg_swimmer]   = XSWIMMER_ALERT = type=unreg,x=$[XPOS],y=$[YPOS]	
+  left_context[unreg_swimmer]   = SURVEY_ALL=true 
+  left_context[unreg_swimmer]   = RETURN_ALL=false
+
+  left_context[reg_swimmer]   = XSWIMMER_ALERT = type=reg,x=$[XPOS],y=$[YPOS]	
+  left_context[reg_swimmer]   = SURVEY_ALL=true 
+  left_context[reg_swimmer]   = RETURN_ALL=false
+
+  right_context[rescue]  = XFOUND_SWIMMER = x=$[XPOS],y=$[YPOS]	
+  right_context[floater] = XSWIMMER_ALERT = type=floater,x=$[XPOS],y=$[YPOS]	
+
+  appcast_viewable     = true
+  appcast_color_scheme = indigo
+
+  action = menu_key=abe # DEPLOY_ABE=true
+  action = menu_key=abe # MOOS_MANUAL_OVERIDE_ABE=false
+  action = menu_key=abe # RETURN_ABE=false
+
+  action = menu_key=ben # DEPLOY_BEN=true
+  action = menu_key=ben # MOOS_MANUAL_OVERIDE_BEN=false
+  action = menu_key=ben # RETURN_BEN=false
+
+  comms_pulse_viewable_all = true
+  range_pulse_viewable_all = false
+  node_pulse_viewable_all  = false
+
+	watch_cluster = key=mission_top, vars=DEPLOY:RETURN:SURVEY:STATION_KEEP
+	watch_cluster = key=mission_top, vars=MODE:MOOS_MANUAL_OVERRIDE
+	
+  vehicles_name_mode = names
+
+	scope = UFRM_GAME_STATUS
+	
+  stale_report_thresh = 2
+  stale_remove_thresh = 20000
+
+  button_one   = DEPLOY  # DEPLOY_ALL=true 
+  button_one   = DEPLOY  # MOOS_MANUAL_OVERRIDE_ALL=false 
+  button_one   = RETURN_ALL=false # SURVEY_ALL=true
+  button_one   = STATION_KEEP_ALL=false 
+
+  button_two   = RETURN   # RETURN_ALL=true  # SURVEY_ALL=false
+  button_three = STATION  # STATION_KEEP_ALL=true # SURVEY_ALL=false
+  button_four = ALLSTOP  # DEPLOY_ALL=false
+
+  button_5 = VANTAGE1  # PMV_CENTER=zoom=1.8,x=46,y=-280
+  button_6 = VANTAGE2  # PMV_CENTER=zoom=2.6,x=17,y=-350
+
+	//button_7 = Buff1 # CONTACT_INFO_ALL=min_util_cpa_dist=4
+	//button_7 = Buff1 # CONTACT_INFO_ALL=max_util_cpa_dist=10
+
+	//button_8 = Buff2 # CONTACT_INFO_ALL=min_util_cpa_dist=8
+	//button_8 = Buff2 # CONTACT_INFO_ALL=max_util_cpa_dist=14
+
+	//button_9 = TCAP100  # PID_THRUST_CAP_ALL=100
+	//button_10 = TCAP50  # PID_THRUST_CAP_ALL=50
+	
+
+	}

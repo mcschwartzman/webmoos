@@ -10,10 +10,10 @@ export PATH="$PATH:$EXTENDLIB"
 if [[ $VNAME == "" ]];
 then
     # if vname is empty, must be shoreside
-    echo "running shoreside with ./launch_shoreside.sh --mport=$MPORT --pshare=$PSHARE --ip=10.1.0.2 --swim_file=mit_05.txt $TIMEWARP"
-    ./launch_shoreside.sh --mport=$MPORT --pshare=$PSHARE --ip=10.1.0.2 --swim_file=mit_05.txt $TIMEWARP
+    # echo "running shoreside with ./launch_shoreside.sh --mport=$MPORT --pshare=$PSHARE --ip=127.0.0.1 --swim_file=mit_05.txt $TIMEWARP"
+    ./launch_shoreside.sh --mport=$SHORE_MPORT --pshare=$SHORE_PSHARE --ip=$SHORE --swim_file=mit_05.txt $TIMEWARP
 else
     # otherwise run this with the vname
-    echo "running vehicle ($VNAME) with ./launch_vehicle.sh --vname=$VNAME --mport=$MPORT --sim --pshare=$PSHARE --ip=$VIP --vrole=$VROLE --tmate=$TMATE --shore=10.1.0.2 --start_pos=$START_POS $TIMEWARP"
-    ./launch_vehicle.sh --vname=$VNAME --mport=$MPORT --sim --pshare=$PSHARE --ip=$VIP --vrole=$VROLE --tmate=$TMATE --shore=10.1.0.2 --start_pos=$START_POS $TIMEWARP
+    echo "running vehicle ($VNAME) with ./launch_vehicle.sh --vname=$VNAME --mport=$MPORT --sim --pshare=$PSHARE --ip=$VIP --vrole=$VROLE --tmate=$TMATE --shore=127.0.0.1 --start_pos=$START_POS $TIMEWARP"
+    ./launch_vehicle.sh --vname=$VNAME --mport=$MPORT --sim --pshare=$PSHARE --ip=$VIP --vrole=$VROLE --tmate=$TMATE --shore=$SHORE --start_pos=$START_POS $TIMEWARP
 fi;

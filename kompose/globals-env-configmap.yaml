@@ -1,8 +1,0 @@
-apiVersion: v1
-data:
-  TIMEWARP: "10"
-kind: ConfigMap
-metadata:
-  labels:
-    io.kompose.service: clayton-globals-env
-  name: globals-env
