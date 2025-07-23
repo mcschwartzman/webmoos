@@ -1,4 +1,4 @@
-ServerHost = ${SHORESIDE_IP}
+ServerHost = 34.63.63.101
 ServerPort = 9000
 Community  = shoreside
 

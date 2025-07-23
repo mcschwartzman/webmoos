@@ -42,4 +42,6 @@ Each vehicle container (clayton, mathew, jeremy, josh) has an `EXTENDLIB` and `E
 
 ## To-do
 - Make convenience script for killing all images/containers
-- Upload cross-platform images
+- Make mission meta files in autonomy directory to override launch script
+- Document process to restart docker containers with new code
+- Upload cross-platform images for all vehicle containers
