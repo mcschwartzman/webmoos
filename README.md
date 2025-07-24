@@ -23,7 +23,7 @@ mosquitto_sub -h 10.1.0.4 -p 1883 -t node-report
 
 ## ARM Configuration
 
-The docker-compose.arm.yaml file is specially set up to pull from public dockerhub images. You should be able to simply run the docker_restart.sh script (as long as it's set to use this arm config). Then just cd into `./community/missions/swimmer_rescue/` and run `pMarineViewer targ_shoreside.moos` to see your shoreside and your vehicles!
+The docker-compose.arm.yaml file is specially set up to pull ARM64 images from public dockerhub repos. You should be able to simply run the docker_restart.sh script (as long as it's set to use this arm config). Then just cd into `./community/missions/swimmer_rescue/` and run `pMarineViewer targ_shoreside.moos` to see your shoreside and your vehicles!
 
 This docker-compose also overrides what's already in the images, so you can experiment locally:
 
