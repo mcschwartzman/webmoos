@@ -8,8 +8,8 @@ services:
       SHORE_PSHARE: 9200
       SHORE: localhost
     volumes:
-      - ./community:/mnt/community
-    entrypoint: ["/bin/bash", "-c", "/mnt/community/docker_2680.sh"]
+      - ./community/missions:/mnt/community/missions
+    entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
   clayton:
     image: mcschwartzman/webmoos-community:latest
     restart: "always"
@@ -24,8 +24,8 @@ services:
       START_POS: "4,-7,135"
       SHORE: localhost
     volumes:
-      - ./community:/mnt/community
-    entrypoint: ["/bin/bash", "-c", "/mnt/community/docker_2680.sh"]
+      - ./community/missions:/mnt/community/missions
+    entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
 
 volumes:
   config:
