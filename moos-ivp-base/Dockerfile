@@ -6,7 +6,7 @@ RUN apt update \
     && cd git \
     && git clone https://github.com/moos-ivp/moos-ivp.git \
     && cd /git/moos-ivp \
-    && ./build.sh \
+    && ./build.sh -m \
     && cd /git \
     && git clone https://github.com/mit2680/moos-ivp-2680.git \
     && cd /git/moos-ivp-2680 \
