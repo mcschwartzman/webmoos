@@ -1,4 +1,4 @@
-FROM mcschwartzman/moos-ivp-base:latest
+FROM mcschwartzman/moos-ivp-base-arm:latest
 
 COPY ./missions /missions
 COPY ./docker_entrypoint.sh docker_entrypoint.sh
