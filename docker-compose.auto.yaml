@@ -16,7 +16,7 @@ services:
         ipv4_address: 10.1.0.2
     volumes:
       - ./community/missions:/mnt/community/missions
-    entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
+    entrypoint: ["/bin/bash", "-c", "exit 1"]
     depends_on:
           - clayton
           - mathew
@@ -42,7 +42,7 @@ services:
         ipv4_address: 10.1.0.21
     volumes:
       - ./community/missions:/mnt/community/missions
-    entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
+    entrypoint: ["/bin/bash", "-c", "exit 1"]
   mathew:
     image: mcschwartzman/webmoos-community-arm:latest
     restart: "no"
@@ -66,7 +66,7 @@ services:
         ipv4_address: 10.1.0.22
     volumes:
       - ./community/missions:/mnt/community/missions
-    entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
+    entrypoint: ["/bin/bash", "-c", "exit 1"]
 
 volumes:
   config:
