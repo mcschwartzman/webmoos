@@ -26,6 +26,10 @@ Processconfig = ANTLER
   Run = uFldCollisionDetect @ NewConsole = false
   Run = pRealm              @ NewConsole = false
   Run = uFldRescueMgr       @ NewConsole = false
+	
+	Run = pMissionEval        @ NewConsole = false
+	Run = pAutoPoke           @ NewConsole = false
+	
 }
 
 #include plugs.moos <pHostInfo>
@@ -226,7 +230,6 @@ ProcessConfig = pMarineViewer
   action = menu_key=abe # DEPLOY_ABE=true
   action = menu_key=abe # MOOS_MANUAL_OVERIDE_ABE=false
   action = menu_key=abe # RETURN_ABE=false
-
   action = menu_key=ben # DEPLOY_BEN=true
   action = menu_key=ben # MOOS_MANUAL_OVERIDE_BEN=false
   action = menu_key=ben # RETURN_BEN=false
@@ -267,3 +270,39 @@ ProcessConfig = pMarineViewer
 
 	}
 
+
+//----------------------------------------------------
+// pAutoPoke Config Block  
+
+ProcessConfig = pAutoPoke
+{
+  AppTick    = 2
+  CommsTick  = 2
+
+  flag = DEPLOY_ALL=true 
+  flag = MOOS_MANUAL_OVERRIDE_ALL=false
+
+	required_nodes = 1
+}
+
+//----------------------------------------------------
+// pMissionEval Config Block  
+
+ProcessConfig = pMissionEval
+{
+  AppTick    = 4
+  CommsTick  = 4
+
+  lead_condition = RETURN = true
+  pass_condition = RETURN = true
+
+  result_flag = MISSION_EVALUATED = true
+  result_flag = SAY_MOOS=done
+
+	report_column = form=obavoid
+	report_column = grade=$[GRADE]
+	report_column = swimmers=$[RESUED_COUNT] //change this out for real variable
+	report_column = date=$[DATE]
+	report_column = time=$[TIME]
+	report_file = results.txt
+}
