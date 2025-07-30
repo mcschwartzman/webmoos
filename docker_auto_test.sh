@@ -1,7 +1,7 @@
 #!/bin/bash
 
 COMPOSE_FILE="docker-compose.auto.yaml"
-MISSION_DIR=~/webmoos/community/missions/swimmer_rescue
+MISSION_DIR=~/webmoos/community/missions/auto_swimmer_rescue
 
 for inputspeed in {1..10}; do
   echo "Launching Docker Compose with speed=$inputspeed..."
