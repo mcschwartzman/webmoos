@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /mnt/community/missions/swimmer_rescue
+cd /mnt/community/missions/manual_swimmer_rescue
 
 export PATH="$PATH:/git/moos-ivp-2680/bin"
 export PATH="$PATH:$EXTENDBIN"
