@@ -1,0 +1,80 @@
+services:
+  shoreside:
+    image: mcschwartzman/webmoos-community-arm:latest
+    restart: "no"
+    environment:
+      SHORE_MPORT: 9000
+      SHORE_PSHARE: 9200
+      SHORE: 10.1.0.2
+    ports:
+      - "9000:9000/tcp"
+    env_file:
+      - path: ./globals.env
+        required: true
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.2
+    volumes:
+      - ./community/missions:/mnt/community/missions
+    entrypoint: ["/bin/bash", "-c", "exit 1"]
+    depends_on:
+          - clayton
+          - mathew
+  clayton:
+    image: mcschwartzman/webmoos-community-arm:latest
+    restart: "no"
+    environment:
+      MPORT: 9001
+      PSHARE: 9201
+      VNAME: clayton
+      VIP: 10.1.0.21
+      VROLE: rescue
+      TMATE: mathew
+      START_POS: "4,-7,135"
+      SHORE: 10.1.0.2
+    ports:
+      - "9001:9001/tcp"
+    env_file:
+      - path: ./globals.env
+        required: true
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.21
+    volumes:
+      - ./community/missions:/mnt/community/missions
+    entrypoint: ["/bin/bash", "-c", "exit 1"]
+  mathew:
+    image: mcschwartzman/webmoos-community-arm:latest
+    restart: "no"
+    environment:
+      MPORT: 9002
+      PSHARE: 9202
+      VNAME: mathew
+      VIP: 10.1.0.22
+      VROLE: scout
+      TMATE: clayton
+      START_POS: "-12,-15,135"
+      SHORE: 10.1.0.2
+      IVP_BEHAVIOR_DIRS: /git/moos-ivp-mcschwar/lib
+    ports:
+      - "9002:9002/tcp"
+    env_file:
+      - path: ./globals.env
+        required: true
+    networks:
+      staticbridge:
+        ipv4_address: 10.1.0.22
+    volumes:
+      - ./community/missions:/mnt/community/missions
+    entrypoint: ["/bin/bash", "-c", "exit 1"]
+
+volumes:
+  config:
+  
+networks:
+  staticbridge:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.1.0.0/16
+          gateway: 10.1.0.1

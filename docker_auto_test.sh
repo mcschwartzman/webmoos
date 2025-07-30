@@ -1,6 +1,6 @@
 #!/bin/bash
 
-COMPOSE_FILE="docker-compose.arm.yaml"
+COMPOSE_FILE="docker-compose.auto.yaml"
 MISSION_DIR=~/webmoos/community/missions/swimmer_rescue
 
 for inputspeed in {1..10}; do

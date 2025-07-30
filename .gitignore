@@ -4,3 +4,11 @@ ui/node_modules
 **/.LastOpenedMOOSLogDirectory
 **/__pycache__
 **/moos-ivp-mcschwar
+
+**/vcolors.txt
+**/vnames.txt
+**/vmates.txt
+**/vroles.txt
+**/vpositions.txt
+**/vspeeds.txt
+**/vpositions.txt
