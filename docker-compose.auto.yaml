@@ -17,9 +17,6 @@ services:
     volumes:
       - ./community/missions:/mnt/community/missions
     entrypoint: ["/bin/bash", "-c", "/mnt/community/missions/auto_swimmer_rescue/entrypoint_override.sh"]
-    depends_on:
-          - clayton
-          - mathew
   clayton:
     image: mcschwartzman/webmoos-community-arm:latest
     restart: "no"
@@ -43,6 +40,8 @@ services:
     volumes:
       - ./community/missions:/mnt/community/missions
     entrypoint: ["/bin/bash", "-c", "/mnt/community/missions/auto_swimmer_rescue/entrypoint_override.sh"]
+    depends_on:
+      - shoreside
   mathew:
     image: mcschwartzman/webmoos-community-arm:latest
     restart: "no"
@@ -67,7 +66,8 @@ services:
     volumes:
       - ./community/missions:/mnt/community/missions
     entrypoint: ["/bin/bash", "-c", "/mnt/community/missions/auto_swimmer_rescue/entrypoint_override.sh"]
-
+    depends_on:
+      - shoreside
 volumes:
   config:
   
