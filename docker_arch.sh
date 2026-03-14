@@ -17,16 +17,7 @@ detect_webmoos_arch() {
 }
 
 default_webmoos_image() {
-  local arch
-  arch="$(detect_webmoos_arch)" || return 1
-  case "$arch" in
-    amd64)
-      echo "mcschwartzman/webmoos-community:latest"
-      ;;
-    arm64)
-      echo "mcschwartzman/webmoos-community-arm:latest"
-      ;;
-  esac
+  echo "${WEBMOOS_COMMUNITY_IMAGE_REPO:-cbenj27/webmoos-community}:${WEBMOOS_COMMUNITY_IMAGE_TAG:-latest}"
 }
 
 default_webmoos_auto_compose() {
@@ -34,14 +25,5 @@ default_webmoos_auto_compose() {
 }
 
 default_webmoos_restart_compose() {
-  local arch
-  arch="$(detect_webmoos_arch)" || return 1
-  case "$arch" in
-    amd64)
-      echo "docker-compose.yaml"
-      ;;
-    arm64)
-      echo "docker-compose.arm.yaml"
-      ;;
-  esac
+  echo "docker-compose.bridge.yaml"
 }

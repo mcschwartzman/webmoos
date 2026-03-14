@@ -2,22 +2,21 @@
 
 What changed:
 
-- `docker_auto_test.sh` now auto-detects `arm64` vs `amd64`
-- `docker_auto_test_arm.sh` and `docker_auto_test_amd64.sh` are compatibility wrappers
-- `docker_restart.sh` now auto-selects the current arch by default
-- compose files now accept `WEBMOOS_COMMUNITY_IMAGE`
-- `community/Dockerfile` now accepts `BASE_IMAGE`
+- `cbenj27/moos-ivp-base:latest` is now a real multi-arch image
+- `cbenj27/webmoos-community:latest` is now a real multi-arch image
+- `community/Dockerfile` now bakes Charlie's Linux `bin/` and `lib/` artifacts into the image
+- `docker_restart.sh` and `docker_auto_test.sh` now use one image name by default
+- the remaining compose split is topology-based rather than architecture-based
 
 How to use:
 
 - Auto-test on current machine: `./docker_auto_test.sh`
-- Force ARM: `./docker_auto_test_arm.sh`
-- Force AMD64: `./docker_auto_test_amd64.sh`
+- Restart default bridge mission: `./docker_restart.sh -d`
+- Use host-network compose instead: `COMPOSE_FILE=docker-compose.yaml ./docker_restart.sh -d`
 - Override image: `WEBMOOS_COMMUNITY_IMAGE=<image> ./docker_auto_test.sh`
-- Override base image when building: `docker build --build-arg BASE_IMAGE=<image> ./community`
 
-Still blocked on external image work:
+Topology files:
 
-- publish `mcschwartzman/moos-ivp-base` as a real multi-arch image
-- publish `mcschwartzman/webmoos-community` as a real multi-arch image
-- once that exists, most arch-specific compose/script duplication can be removed
+- `docker-compose.bridge.yaml`: bridge-network mission
+- `docker-compose.auto.yaml`: bridge-network auto-test mission
+- `docker-compose.yaml`: host-network mission

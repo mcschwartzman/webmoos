@@ -19,5 +19,8 @@ ENV PATH="$PATH:/git/moos-ivp/bin:/git/moos-ivp/scripts:/git/moos-ivp-2680/bin"
 RUN cd git \
     && git clone https://github.com/msis/python-moos \
     && cd python-moos \
-    && python3 setup.py build \
-    && python3 setup.py install
+    && mkdir build \
+    && cd build \
+    && cmake .. -DPYBIND11_PYTHON_VERSION=3 \
+    && cmake --build . --parallel 2 \
+    && cmake --install .

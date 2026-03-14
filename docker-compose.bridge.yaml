@@ -1,6 +1,6 @@
 services:
   shoreside:
-    image: ${WEBMOOS_COMMUNITY_IMAGE:-mcschwartzman/webmoos-community-arm:latest}
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-cbenj27/webmoos-community:latest}
     restart: "always"
     environment:
       SHORE_MPORT: 9000
@@ -18,7 +18,7 @@ services:
       - ./community/missions:/mnt/community/missions
     entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
   clayton:
-    image: ${WEBMOOS_COMMUNITY_IMAGE:-mcschwartzman/webmoos-community-arm:latest}
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-cbenj27/webmoos-community:latest}
     restart: "always"
     environment:
       MPORT: 9001
@@ -41,7 +41,7 @@ services:
       - ./community/missions:/mnt/community/missions
     entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
   mathew:
-    image: ${WEBMOOS_COMMUNITY_IMAGE:-mcschwartzman/webmoos-community-arm:latest}
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-cbenj27/webmoos-community:latest}
     restart: "always"
     environment:
       MPORT: 9002
@@ -52,7 +52,6 @@ services:
       TMATE: clayton
       START_POS: "-12,-15,135"
       SHORE: 10.1.0.2
-      IVP_BEHAVIOR_DIRS: /git/moos-ivp-mcschwar/lib
     ports:
       - "9002:9002/tcp"
     env_file:
@@ -67,7 +66,7 @@ services:
 
 volumes:
   config:
-  
+
 networks:
   staticbridge:
     driver: bridge

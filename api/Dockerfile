@@ -1,4 +1,5 @@
-FROM mcschwartzman/moos-ivp-base:latest
+ARG BASE_IMAGE=cbenj27/moos-ivp-base:latest
+FROM ${BASE_IMAGE}
 
 RUN apt install python3-pip -y \
     && pip install fastapi[standard] \
