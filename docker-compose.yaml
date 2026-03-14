@@ -1,6 +1,6 @@
 services:
   shoreside:
-    image: mcschwartzman/webmoos-community:latest
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-mcschwartzman/webmoos-community:latest}
     restart: "always"
     network_mode: host
     environment:
@@ -11,7 +11,7 @@ services:
       - ./community/missions:/mnt/community/missions
     entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
   clayton:
-    image: mcschwartzman/webmoos-community:latest
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-mcschwartzman/webmoos-community:latest}
     restart: "always"
     network_mode: host
     environment:

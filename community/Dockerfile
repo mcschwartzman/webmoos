@@ -1,4 +1,5 @@
-FROM mcschwartzman/moos-ivp-base-arm:latest
+ARG BASE_IMAGE=mcschwartzman/moos-ivp-base-arm:latest
+FROM ${BASE_IMAGE}
 
 COPY ./missions /missions
 COPY ./docker_entrypoint.sh docker_entrypoint.sh

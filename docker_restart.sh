@@ -1,11 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-docker compose -f docker-compose.arm.yaml down &&
-# docker image rm webmoos-api &&
-# docker rm webmoos-mathew-1 webmoos-shoreside-1 webmoos-clayton-1 webmoos-josh-1 webmoos-jeremy-1
-# docker image rm webmoos-mathew webmoos-shoreside webmoos-clayton webmoos-josh webmoos-jeremy
-# docker image rm webmoos-ui &&
-docker compose -f docker-compose.arm.yaml up
+set -euo pipefail
 
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$ROOT_DIR/docker_arch.sh"
+
+export WEBMOOS_COMMUNITY_IMAGE="${WEBMOOS_COMMUNITY_IMAGE:-$(default_webmoos_image)}"
+COMPOSE_FILE="${COMPOSE_FILE:-$(default_webmoos_restart_compose)}"
+
+cd "$ROOT_DIR"
+
+docker compose -f "$COMPOSE_FILE" down --remove-orphans
+docker compose -f "$COMPOSE_FILE" up "$@"
 
 

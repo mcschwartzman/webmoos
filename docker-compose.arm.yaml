@@ -1,6 +1,6 @@
 services:
   shoreside:
-    image: mcschwartzman/webmoos-community-arm:latest
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-mcschwartzman/webmoos-community-arm:latest}
     restart: "always"
     environment:
       SHORE_MPORT: 9000
@@ -18,7 +18,7 @@ services:
       - ./community/missions:/mnt/community/missions
     entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
   clayton:
-    image: mcschwartzman/webmoos-community-arm:latest
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-mcschwartzman/webmoos-community-arm:latest}
     restart: "always"
     environment:
       MPORT: 9001
@@ -41,7 +41,7 @@ services:
       - ./community/missions:/mnt/community/missions
     entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
   mathew:
-    image: mcschwartzman/webmoos-community-arm:latest
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-mcschwartzman/webmoos-community-arm:latest}
     restart: "always"
     environment:
       MPORT: 9002
