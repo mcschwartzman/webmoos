@@ -18,7 +18,7 @@ mosquitto_sub -h 10.1.0.4 -p 1883 -t node-report
 
 ## First-time Setup
 1. Make sure Docker Desktop or Docker Engine with Compose v2 is installed.
-2. From the repo root, start the default bridge-network mission with:
+2. From the repo root, start the default mission with:
 
 ```bash
 ./docker_restart.sh -d
@@ -28,6 +28,12 @@ mosquitto_sub -h 10.1.0.4 -p 1883 -t node-report
 
 ```bash
 pMarineViewer targ_shoreside.moos
+```
+
+4. Run the auto-test flow with:
+
+```bash
+./docker_auto_test.sh
 ```
 
 The default published images are now:
@@ -41,22 +47,31 @@ Both tags are multi-arch manifests that serve `linux/arm64` and `linux/amd64`, s
 
 There are two supported compose topologies:
 
-- [docker-compose.bridge.yaml](/Users/charlesbenjamin/webmoos/docker-compose.bridge.yaml): three-container bridge-network mission. This is the default used by [docker_restart.sh](/Users/charlesbenjamin/webmoos/docker_restart.sh) and [docker_auto_test.sh](/Users/charlesbenjamin/webmoos/docker_auto_test.sh).
+- [docker-compose.bridge.yaml](/Users/charlesbenjamin/webmoos/docker-compose.bridge.yaml): three-container bridge-network swimmer-rescue mission. This is the default used by [docker_restart.sh](/Users/charlesbenjamin/webmoos/docker_restart.sh).
 - [docker-compose.yaml](/Users/charlesbenjamin/webmoos/docker-compose.yaml): simpler host-network mission with two communities.
 - [docker-compose.auto.yaml](/Users/charlesbenjamin/webmoos/docker-compose.auto.yaml): auto-test mission used by [docker_auto_test.sh](/Users/charlesbenjamin/webmoos/docker_auto_test.sh).
 
-Examples:
+The compose files bind-mount the mission files from this repo so you can iterate on `.moos` and `.bhv` files locally without rebuilding the images.
+
+By default, [docker_restart.sh](/Users/charlesbenjamin/webmoos/docker_restart.sh) and [docker_auto_test.sh](/Users/charlesbenjamin/webmoos/docker_auto_test.sh) pull the image before launch so the host resolves the correct architecture from the published multi-arch tag. Set `PULL_IMAGES=0` only if you intentionally want to use a locally built tag without pulling.
+
+## Advanced Usage
+
+Most users should only need:
 
 ```bash
 ./docker_restart.sh -d
-COMPOSE_FILE=docker-compose.yaml ./docker_restart.sh -d
 ./docker_auto_test.sh
-WEBMOOS_COMMUNITY_IMAGE=cbenj27/webmoos-community:latest ./docker_auto_test.sh
 ```
 
-The compose files bind-mount the mission files from this repo so you can iterate on `.moos` and `.bhv` files locally without rebuilding the images.
+Use these overrides only when you have a specific reason:
 
-By default, [docker_restart.sh](/Users/charlesbenjamin/webmoos/docker_restart.sh) and [docker_auto_test.sh](/Users/charlesbenjamin/webmoos/docker_auto_test.sh) pull the image before launch so the host resolves the correct architecture from the published multi-arch tag. Set `PULL_IMAGES=0` if you intentionally want to use a locally built tag without pulling.
+```bash
+COMPOSE_FILE=docker-compose.yaml ./docker_restart.sh -d
+WEBMOOS_COMMUNITY_IMAGE=<some-other-tag> ./docker_restart.sh -d
+WEBMOOS_COMMUNITY_IMAGE=<some-other-tag> ./docker_auto_test.sh
+PULL_IMAGES=0 ./docker_restart.sh -d
+```
 
 ## Custom App and Behavior Artifacts
 
@@ -70,12 +85,12 @@ Those are built from your local Charlie repo during image creation and baked int
 If you need to rebuild the images locally, use:
 
 ```bash
-./build_base_image.sh arm64
-./build_base_image.sh amd64
-./build_charlie_artifacts.sh arm64
-./build_charlie_artifacts.sh amd64
-./build_community_image.sh arm64
-./build_community_image.sh amd64
+./scripts/images/build_base_image.sh arm64
+./scripts/images/build_base_image.sh amd64
+./scripts/images/build_swimmer_rescue_artifacts.sh arm64
+./scripts/images/build_swimmer_rescue_artifacts.sh amd64
+./scripts/images/build_community_image.sh arm64
+./scripts/images/build_community_image.sh amd64
 ```
 
 Variables that should be shared across MOOS communities, such as `TIMEWARP`, can be defined in [globals.env](/Users/charlesbenjamin/webmoos/globals.env).
@@ -108,3 +123,24 @@ What remains split in-repo is topology, not CPU architecture:
 
 - [docker-compose.bridge.yaml](/Users/charlesbenjamin/webmoos/docker-compose.bridge.yaml) for bridge networking
 - [docker-compose.yaml](/Users/charlesbenjamin/webmoos/docker-compose.yaml) for host networking
+
+## Top-level File Guide
+
+- [README.md](/Users/charlesbenjamin/webmoos/README.md): main setup and usage guide.
+- [ARCH_NEUTRALITY.md](/Users/charlesbenjamin/webmoos/ARCH_NEUTRALITY.md): branch-specific migration notes about the dual-arch work.
+- [docker_restart.sh](/Users/charlesbenjamin/webmoos/docker_restart.sh): starts the default mission.
+- [docker_auto_test.sh](/Users/charlesbenjamin/webmoos/docker_auto_test.sh): runs the swimmer-rescue auto-test loop.
+- [docker-compose.bridge.yaml](/Users/charlesbenjamin/webmoos/docker-compose.bridge.yaml): default bridge-network runtime topology.
+- [docker-compose.auto.yaml](/Users/charlesbenjamin/webmoos/docker-compose.auto.yaml): auto-test topology.
+- [docker-compose.yaml](/Users/charlesbenjamin/webmoos/docker-compose.yaml): alternate host-network runtime topology.
+- [docker-compose.api.yaml](/Users/charlesbenjamin/webmoos/docker-compose.api.yaml): older API-specific compose file.
+- [docker-compose.fleet.yaml](/Users/charlesbenjamin/webmoos/docker-compose.fleet.yaml): older fleet-oriented compose file that still uses legacy assumptions.
+- [globals.env](/Users/charlesbenjamin/webmoos/globals.env): shared mission environment defaults.
+- [scripts](/Users/charlesbenjamin/webmoos/scripts): image rebuild and publish helpers.
+- [moos-ivp-base](/Users/charlesbenjamin/webmoos/moos-ivp-base): base image Dockerfile and build context.
+- [community](/Users/charlesbenjamin/webmoos/community): mission files and community image content.
+- [api](/Users/charlesbenjamin/webmoos/api): FastAPI image content.
+- [ui](/Users/charlesbenjamin/webmoos/ui): web UI source.
+- [config](/Users/charlesbenjamin/webmoos/config): mosquitto and related runtime config.
+- [images](/Users/charlesbenjamin/webmoos/images): screenshots and README media.
+- [remote_clayton.moos](/Users/charlesbenjamin/webmoos/remote_clayton.moos) and [remote_shoreside.moos](/Users/charlesbenjamin/webmoos/remote_shoreside.moos): standalone mission files for remote/manual workflows.

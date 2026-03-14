@@ -20,3 +20,9 @@ Topology files:
 - `docker-compose.bridge.yaml`: bridge-network mission
 - `docker-compose.auto.yaml`: bridge-network auto-test mission
 - `docker-compose.yaml`: host-network mission
+
+Maintenance scripts:
+
+- `scripts/images/build_base_image.sh`
+- `scripts/images/build_swimmer_rescue_artifacts.sh`
+- `scripts/images/build_community_image.sh`

@@ -2,8 +2,24 @@
 
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$ROOT_DIR/docker_arch.sh"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+detect_webmoos_arch() {
+  local arch="${WEBMOOS_ARCH:-$(uname -m)}"
+  case "$arch" in
+    x86_64|amd64)
+      echo "amd64"
+      ;;
+    aarch64|arm64)
+      echo "arm64"
+      ;;
+    *)
+      echo "Unsupported architecture: $arch" >&2
+      return 1
+      ;;
+  esac
+}
 
 ARCH="${1:-$(detect_webmoos_arch)}"
 case "$ARCH" in

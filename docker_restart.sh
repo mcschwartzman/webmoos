@@ -3,10 +3,9 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$ROOT_DIR/docker_arch.sh"
 
-export WEBMOOS_COMMUNITY_IMAGE="${WEBMOOS_COMMUNITY_IMAGE:-$(default_webmoos_image)}"
-COMPOSE_FILE="${COMPOSE_FILE:-$(default_webmoos_restart_compose)}"
+export WEBMOOS_COMMUNITY_IMAGE="${WEBMOOS_COMMUNITY_IMAGE:-${WEBMOOS_COMMUNITY_IMAGE_REPO:-cbenj27/webmoos-community}:${WEBMOOS_COMMUNITY_IMAGE_TAG:-latest}}"
+COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.bridge.yaml}"
 PULL_IMAGES="${PULL_IMAGES:-1}"
 
 cd "$ROOT_DIR"
