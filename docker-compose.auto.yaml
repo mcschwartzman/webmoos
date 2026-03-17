@@ -1,6 +1,6 @@
 services:
   shoreside:
-    image: mcschwartzman/webmoos-community-arm:latest
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-cbenj27/webmoos-community:latest}
     restart: "no"
     environment:
       SHORE_MPORT: 9000
@@ -18,7 +18,7 @@ services:
       - ./community/missions:/mnt/community/missions
     entrypoint: ["/bin/bash", "-c", "/mnt/community/missions/auto_swimmer_rescue/entrypoint_override.sh"]
   clayton:
-    image: mcschwartzman/webmoos-community-arm:latest
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-cbenj27/webmoos-community:latest}
     restart: "no"
     environment:
       MPORT: 9001
@@ -43,7 +43,7 @@ services:
     depends_on:
       - shoreside
   mathew:
-    image: mcschwartzman/webmoos-community-arm:latest
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-cbenj27/webmoos-community:latest}
     restart: "no"
     environment:
       MPORT: 9002
@@ -54,7 +54,6 @@ services:
       TMATE: clayton
       START_POS: "-12,-15,135"
       SHORE: 10.1.0.2
-      IVP_BEHAVIOR_DIRS: /git/moos-ivp-mcschwar/lib
     ports:
       - "9002:9002/tcp"
     env_file:

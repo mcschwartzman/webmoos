@@ -1,7 +1,7 @@
 services:
   shoreside:
-    image: mcschwartzman/webmoos-community:latest
-    restart: "no"
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-cbenj27/webmoos-community:latest}
+    restart: "always"
     environment:
       SHORE_MPORT: 9000
       SHORE_PSHARE: 9200
@@ -16,10 +16,10 @@ services:
         ipv4_address: 10.1.0.2
     volumes:
       - ./community/missions:/mnt/community/missions
-    entrypoint: ["/bin/bash", "-c", "/mnt/community/missions/auto_swimmer_rescue/entrypoint_override.sh"]
+    entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
   clayton:
-    image: mcschwartzman/webmoos-community:latest
-    restart: "no"
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-cbenj27/webmoos-community:latest}
+    restart: "always"
     environment:
       MPORT: 9001
       PSHARE: 9201
@@ -39,12 +39,10 @@ services:
         ipv4_address: 10.1.0.21
     volumes:
       - ./community/missions:/mnt/community/missions
-    entrypoint: ["/bin/bash", "-c", "/mnt/community/missions/auto_swimmer_rescue/entrypoint_override.sh"]
-    depends_on:
-      - shoreside
+    entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
   mathew:
-    image: mcschwartzman/webmoos-community:latest
-    restart: "no"
+    image: ${WEBMOOS_COMMUNITY_IMAGE:-cbenj27/webmoos-community:latest}
+    restart: "always"
     environment:
       MPORT: 9002
       PSHARE: 9202
@@ -54,7 +52,6 @@ services:
       TMATE: clayton
       START_POS: "-12,-15,135"
       SHORE: 10.1.0.2
-      IVP_BEHAVIOR_DIRS: /git/moos-ivp-mcschwar/lib
     ports:
       - "9002:9002/tcp"
     env_file:
@@ -65,9 +62,8 @@ services:
         ipv4_address: 10.1.0.22
     volumes:
       - ./community/missions:/mnt/community/missions
-    entrypoint: ["/bin/bash", "-c", "/mnt/community/missions/auto_swimmer_rescue/entrypoint_override.sh"]
-    depends_on:
-      - shoreside
+    entrypoint: ["/bin/bash", "-c", "/docker_2680.sh"]
+
 volumes:
   config:
 

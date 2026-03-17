@@ -2,6 +2,15 @@
 
 cd /mnt/community/missions/swimmer_rescue
 
+if [[ -d /opt/webmoos-extend/bin ]]; then
+    export EXTENDBIN="${EXTENDBIN:+$EXTENDBIN:}/opt/webmoos-extend/bin"
+fi
+
+if [[ -d /opt/webmoos-extend/lib ]]; then
+    export EXTENDLIB="${EXTENDLIB:+$EXTENDLIB:}/opt/webmoos-extend/lib"
+    export IVP_BEHAVIOR_DIRS="${IVP_BEHAVIOR_DIRS:+$IVP_BEHAVIOR_DIRS:}/opt/webmoos-extend/lib"
+fi
+
 export PATH="$PATH:/git/moos-ivp-2680/bin"
 export PATH="$PATH:$EXTENDBIN"
 export PATH="$PATH:$EXTENDLIB"
