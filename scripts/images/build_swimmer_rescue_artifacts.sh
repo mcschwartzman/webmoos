@@ -5,6 +5,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
+# Resolve the local host architecture into the Docker platform names we use
+# for local staging images and containerized artifact builds.
 detect_webmoos_arch() {
   local arch="${WEBMOOS_ARCH:-$(uname -m)}"
   case "$arch" in
@@ -38,9 +40,14 @@ BASE_IMAGE_REPO="${WEBMOOS_BASE_IMAGE_REPO:-cbenj27/moos-ivp-base}"
 BASE_IMAGE_TAG="${WEBMOOS_BASE_IMAGE_TAG:-${ARCH}-dev}"
 BASE_IMAGE="${WEBMOOS_BASE_IMAGE:-${BASE_IMAGE_REPO}:${BASE_IMAGE_TAG}}"
 
+# Start from a clean artifact directory so later image builds do not pick up
+# stale binaries from a previous architecture or earlier build.
 rm -rf "$ARTIFACTS_DIR"
 mkdir -p "$ARTIFACTS_DIR/bin" "$ARTIFACTS_DIR/lib"
 
+# Build Charlie's Linux artifacts inside the selected base image instead of on
+# the host. That keeps the toolchain consistent with the runtime image and lets
+# us target either amd64 or arm64 from one script.
 docker run --rm \
   --platform "linux/${ARCH}" \
   --user "$(id -u):$(id -g)" \
@@ -50,9 +57,14 @@ docker run --rm \
   "$BASE_IMAGE" \
   bash -lc '
     set -euo pipefail
+    # Point Charlie'\''s build at the MOOS libraries already compiled into the
+    # base image.
     export MOOS_DIR=/git/moos-ivp/build/MOOS/MOOSCore
     export MOOSGeodesy_DIR=/git/moos-ivp/build/MOOS/MOOSGeodesy
     export CMAKE_PREFIX_PATH=/git/moos-ivp/build/MOOS/MOOSCore:/git/moos-ivp/build/MOOS/MOOSGeodesy
+
+    # Assemble a temporary workspace that mirrors the repo layout expected by
+    # Charlie'\''s build script, then copy only the resulting artifacts back out.
     mkdir -p /var/tmp/workspace
     ln -s /git/moos-ivp /var/tmp/workspace/moos-ivp
     ln -s /swarm /var/tmp/workspace/moos-ivp-swarm
