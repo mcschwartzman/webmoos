@@ -55,3 +55,23 @@ Each vehicle container (clayton, mathew, jeremy, josh) has an `EXTENDLIB` and `E
 - Make mission meta files in autonomy directory to override launch script
 - Document process to restart docker containers with new code
 - Upload cross-platform images for all vehicle containers
+
+## Architecture Notes
+
+Current architecture-specific files in this repo:
+
+- ARM64 images:
+  - `docker-compose.arm.yaml`
+  - `docker-compose.auto.yaml`
+  - `docker_restart.sh`
+  - `docker_auto_test_arm.sh`
+
+- AMD64 images:
+  - `docker-compose.amd64.yaml`
+  - `docker-compose.auto.amd64.yaml`
+  - `docker_auto_test_amd64.sh`
+
+In practice:
+
+- Apple Silicon Macs should use the ARM64 files.
+- Intel Macs and other `x86_64` hosts should use the AMD64 files.

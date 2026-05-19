@@ -293,15 +293,15 @@ ProcessConfig = pMissionEval
   AppTick    = 4
   CommsTick  = 4
 
-  lead_condition = RETURN = true
-  pass_condition = RETURN = true
+  lead_condition = RETURN_ALL = true
+  pass_condition = RETURN_ALL = true
 
   result_flag = MISSION_EVALUATED = true
   result_flag = SAY_MOOS=done
 
 	report_column = form=obavoid
 	report_column = grade=$[GRADE]
-	report_column = swimmers=$[RESUED_COUNT] //change this out for real variable
+	report_column = swimmers=$[RESCUED_COUNT] //change this out for real variable
 	report_column = date=$[DATE]
 	report_column = time=$[TIME]
 	report_file = results.txt
