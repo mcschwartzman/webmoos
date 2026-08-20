@@ -31,14 +31,21 @@ if (NOT MOOSIVP_SOURCE_TREE_BASE)
     message( FATAL_ERROR "CMake will exit." )
 endif()
 
-INCLUDE_DIRECTORIES(${MOOS_INCLUDE_DIRS}
-  ${MOOSIVP_SOURCE_TREE_BASE}/include/ivp/)
+INCLUDE_DIRECTORIES(
+  ${MOOS_INCLUDE_DIRS}
+  ${MOOSIVP_SOURCE_TREE_BASE}/include/ivp/
+  )
 
 add_executable(iPoseNodeReporter src/PoseNodeReporter.cpp)
 ament_target_dependencies(iPoseNodeReporter rclcpp std_msgs nav_msgs)
 target_include_directories(iPoseNodeReporter PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
+  $<INSTALL_INTERFACE:include>
+  /opt/ros/humble/include/tf2_geometry_msgs
+  /opt/ros/humble/include/tf2
+  /opt/ros/humble/include/tf2_ros
+  )
+  
 target_compile_features(iPoseNodeReporter PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
 install(TARGETS iPoseNodeReporter
