@@ -23,6 +23,7 @@ class PoseNodeReporter : public rclcpp::Node
             this->declare_parameter("moos_host", "localhost");
             this->declare_parameter("moos_port", 9000);
             this->declare_parameter("app_name", "iPoseNodeReporter");
+            this->declare_parameter("moosvars", "NODE_REPORT");
             
             subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
                 "/model/bluerov2_heavy/odometry", 10, std::bind(&PoseNodeReporter::odom_callback, this, _1)
@@ -32,12 +33,15 @@ class PoseNodeReporter : public rclcpp::Node
             std::string moos_host_param = this->get_parameter("moos_host").as_string();
             int moos_port_param = this->get_parameter("moos_port").as_int();
             std::string app_name_param = this->get_parameter("app_name").as_string();
+            std::string moosvars_param = this->get_parameter("moosvars").as_string();
 
             m_moos_client.Run(moos_host_param, moos_port_param, app_name_param);
+            m_node_reporter = (moosvars_param == "NODE_REPORT");
 
         }
         MOOSClient m_moos_client;
         std::string m_node_report_string;
+        bool m_node_reporter;
 
         
     private:
@@ -64,26 +68,39 @@ class PoseNodeReporter : public rclcpp::Node
             tf2::Matrix3x3 m(q);
             double roll, pitch, yaw;
             m.getRPY(roll, pitch, yaw);
+            yaw = -1 * (0 + (yaw * 360) / 6.28) + 90;
 
-            node_report_string += ",X=" + std::to_string(pose_x);
-            node_report_string += ",Y=" + std::to_string(pose_y);
-            node_report_string += ",DEP=" + std::to_string(-1 * pose_z);
-            node_report_string += ",HDG=" + std::to_string(-1 * (0 + (yaw * 360) / 6.28) + 90);
-            node_report_string += ",SPD=" + std::to_string(speed);
-            node_report_string += ",TIME=" + std::to_string(MOOSTime());
-            node_report_string += ",LENGTH=4";
-            node_report_string += ",COLOR=blue";
-            node_report_string += ",ALLSTOP=clear";
-            node_report_string += ",MODE=MODE@ACTIVE:TRANSITING";
-            node_report_string += ",TYPE=kayak";
+            if (m_node_reporter){
+                node_report_string += ",X=" + std::to_string(pose_x);
+                node_report_string += ",Y=" + std::to_string(pose_y);
+                node_report_string += ",DEP=" + std::to_string(-1 * pose_z);
+                node_report_string += ",HDG=" + std::to_string(yaw);
+                node_report_string += ",SPD=" + std::to_string(speed);
+                node_report_string += ",TIME=" + std::to_string(MOOSTime());
+                node_report_string += ",LENGTH=4";
+                node_report_string += ",COLOR=blue";
+                node_report_string += ",ALLSTOP=clear";
+                node_report_string += ",MODE=MODE@ACTIVE:TRANSITING";
+                node_report_string += ",TYPE=kayak";
 
-            m_node_report_string = node_report_string;
+                m_node_report_string = node_report_string;
+            }
+            else {
+                this->m_moos_client.Notify("NAV_DEPTH", -1 * pose_z);
+                this->m_moos_client.Notify("NAV_HEADING", yaw);
+                this->m_moos_client.Notify("NAV_HEADING_OVER_GROUND", yaw);
+                this->m_moos_client.Notify("NAV_X", pose_x);
+                this->m_moos_client.Notify("NAV_Y", pose_y);
+                this->m_moos_client.Notify("NAV_SPEED", speed);
+            }
+
 
         }
         void node_report_timer_callback(){
-            
-            RCLCPP_INFO_STREAM(this->get_logger(), "NODE_REPORT: " << m_node_report_string);
-            this->m_moos_client.Notify("NODE_REPORT", m_node_report_string);
+            if (m_node_reporter){
+                RCLCPP_INFO_STREAM(this->get_logger(), "NODE_REPORT: " << m_node_report_string);
+                this->m_moos_client.Notify("NODE_REPORT", m_node_report_string);
+            }
         }
         rclcpp::TimerBase::SharedPtr timer_;
         rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr subscription_;
