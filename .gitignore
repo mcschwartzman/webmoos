@@ -12,3 +12,8 @@ ui/node_modules
 **/vpositions.txt
 **/vspeeds.txt
 **/vpositions.txt
+
+# ros stuff
+**/build/
+**/install/
+**/log/

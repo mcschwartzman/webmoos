@@ -36,6 +36,10 @@ INCLUDE_DIRECTORIES(
   ${MOOSIVP_SOURCE_TREE_BASE}/include/ivp/
   )
 
+link_directories(
+  ${MOOSIVP_SOURCE_TREE_BASE}/lib
+)
+
 add_executable(iPoseNodeReporter src/PoseNodeReporter.cpp)
 ament_target_dependencies(iPoseNodeReporter rclcpp std_msgs nav_msgs)
 target_include_directories(iPoseNodeReporter PUBLIC
@@ -47,6 +51,13 @@ target_include_directories(iPoseNodeReporter PUBLIC
   )
   
 target_compile_features(iPoseNodeReporter PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
+target_link_libraries(iPoseNodeReporter
+  ${MOOS_LIBRARIES}
+  mbutil
+  m
+  pthread
+)
 
 install(TARGETS iPoseNodeReporter
   DESTINATION lib/${PROJECT_NAME})

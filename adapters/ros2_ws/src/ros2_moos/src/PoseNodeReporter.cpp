@@ -13,7 +13,7 @@ int main(int argc, char ** argv)
   printf("starting ros2_moos node!\n");
   rclcpp::init(argc, argv);
   auto pose_node_reporter = std::make_shared<PoseNodeReporter>();
-  pose_node_reporter->moos_client.Run(mission_file.c_str(), run_command.c_str());
+  // pose_node_reporter->m_moos_client.Run("localhost", 9000, "com");
   rclcpp::spin(pose_node_reporter);
   rclcpp::shutdown();
   printf("hello world ros2_moos package\n");
