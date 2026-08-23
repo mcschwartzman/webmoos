@@ -4,11 +4,13 @@
     <param name="moos_host" value="localhost" />
     <param name="moos_port" value="9000" />
     <param name="app_name" value="rov_reporter" />
+    <param name="odom_topic" value="/model/bluerov2_heavy/odometry" />
   </node>
   <node pkg="ros2_moos" exec="iPoseNodeReporter" name="asv_adapter" namespace="asv" args="--ros-args --log-level info">
     <param name="moos_host" value="localhost" />
     <param name="moos_port" value="9001" />
     <param name="app_name" value="asv_adapter" />
     <param name="moosvars" value="NAV_" />
+    <param name="odom_topic" value="/model/blueboat/odometry" />
   </node>
 </launch>

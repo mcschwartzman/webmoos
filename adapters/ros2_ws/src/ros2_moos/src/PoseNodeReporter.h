@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 
+#include "std_msgs/msg/float64.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 
@@ -24,27 +25,80 @@ class PoseNodeReporter : public rclcpp::Node
             this->declare_parameter("moos_port", 9000);
             this->declare_parameter("app_name", "iPoseNodeReporter");
             this->declare_parameter("moosvars", "NODE_REPORT");
-            
-            subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
-                "/model/bluerov2_heavy/odometry", 10, std::bind(&PoseNodeReporter::odom_callback, this, _1)
-            );
-            timer_ = this->create_wall_timer(250ms, std::bind(&PoseNodeReporter::node_report_timer_callback, this));
-        
+            this->declare_parameter("odom_topic", "/model/vehicle_name/odometry");
+
             std::string moos_host_param = this->get_parameter("moos_host").as_string();
             int moos_port_param = this->get_parameter("moos_port").as_int();
             std::string app_name_param = this->get_parameter("app_name").as_string();
             std::string moosvars_param = this->get_parameter("moosvars").as_string();
-
+            std::string odom_topic_param = this->get_parameter("odom_topic").as_string();
+            
+            subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
+                odom_topic_param, 10, std::bind(&PoseNodeReporter::odom_callback, this, _1)
+            );
+            timer_ = this->create_wall_timer(250ms, std::bind(&PoseNodeReporter::node_report_timer_callback, this));
+        
             m_moos_client.Run(moos_host_param, moos_port_param, app_name_param);
             m_node_reporter = (moosvars_param == "NODE_REPORT");
+
+            if (!m_node_reporter){
+                m_moos_client.Register("DESIRED_THRUST", 0);
+                m_moos_client.Register("DESIRED_RUDDER", 0);
+                
+                m_moos_client.SetOnMailCallBack(PoseNodeReporter::moos_mail_callback, this);
+                
+                port_thrust_pub_ = this->create_publisher<std_msgs::msg::Float64>("/model/blueboat/joint/motor_port_joint/cmd_thrust", 10);
+                stbd_thrust_pub_ = this->create_publisher<std_msgs::msg::Float64>("/model/blueboat/joint/motor_stbd_joint/cmd_thrust", 10);
+            }
 
         }
         MOOSClient m_moos_client;
         std::string m_node_report_string;
         bool m_node_reporter;
 
-        
+        double m_desired_thrust;
+        double m_desired_rudder;
+
+        double m_port_thrust;
+        double m_stbd_thrust;
+
     private:
+        static bool moos_mail_callback(void * pParam){
+            CMOOSCommClient * pC = static_cast<CMOOSCommClient*> (pParam);
+            PoseNodeReporter* pNR = static_cast<PoseNodeReporter*>(pParam);
+            MOOSMSG_LIST NewMail;
+            pC->Fetch(NewMail);
+
+            MOOSMSG_LIST::iterator p;
+
+            for(p=NewMail.begin(); p!=NewMail.end(); p++) {
+                CMOOSMsg &msg = *p;
+                std::string key    = msg.GetKey();
+
+                double dval  = msg.GetDouble();
+            #if 0 // Keep these around just for template
+                std::string comm  = msg.GetCommunity();
+                std::string sval  = msg.GetString(); 
+                std::string msrc  = msg.GetSource();
+                double mtime = msg.GetTime();
+                bool   mdbl  = msg.IsDouble();
+                bool   mstr  = msg.IsString();
+            #endif
+
+                if(key == "DESIRED_THRUST"){
+                    pNR->m_desired_thrust = dval;
+                }
+                else if(key == "DESIRED_RUDDER"){
+                    pNR->m_desired_rudder = dval;
+                }
+                else if(key != "APPCAST_REQ"){
+
+                } // handled by AppCastingMOOSApp
+            }
+                
+            return(true);
+        }
+
         void odom_callback(const nav_msgs::msg::Odometry &msg) 
         {
             
@@ -86,24 +140,48 @@ class PoseNodeReporter : public rclcpp::Node
                 m_node_report_string = node_report_string;
             }
             else {
-                this->m_moos_client.Notify("NAV_DEPTH", -1 * pose_z);
                 this->m_moos_client.Notify("NAV_HEADING", yaw);
                 this->m_moos_client.Notify("NAV_HEADING_OVER_GROUND", yaw);
                 this->m_moos_client.Notify("NAV_X", pose_x);
                 this->m_moos_client.Notify("NAV_Y", pose_y);
+                this->m_moos_client.Notify("NAV_DEPTH", -1 * pose_z);
                 this->m_moos_client.Notify("NAV_SPEED", speed);
             }
-
-
         }
         void node_report_timer_callback(){
             if (m_node_reporter){
                 RCLCPP_INFO_STREAM(this->get_logger(), "NODE_REPORT: " << m_node_report_string);
                 this->m_moos_client.Notify("NODE_REPORT", m_node_report_string);
             }
+            else {
+                // calculate thruster values from desired 
+                
+                // rudder:
+                // hard to port is -100
+                // hard to stbd is 100
+                // straight is 0
+
+                // when turning hard to port, port thruster should be at 0 or less, so:
+                // port thruster should always be base_thrust + desired_rudder
+                // stbd thruster should always be base_thrust - desired_rudder
+
+                double base_thrust = m_desired_thrust;
+                m_port_thrust = base_thrust + m_desired_rudder;
+                m_stbd_thrust = base_thrust - m_desired_rudder;
+
+                auto port_thrust_msg = std_msgs::msg::Float64();
+                port_thrust_msg.data = m_port_thrust;
+                auto stbd_thrust_msg = std_msgs::msg::Float64();
+                stbd_thrust_msg.data = m_stbd_thrust;
+
+                port_thrust_pub_->publish(port_thrust_msg);
+                stbd_thrust_pub_->publish(stbd_thrust_msg);
+            }
         }
         rclcpp::TimerBase::SharedPtr timer_;
         rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr subscription_;
+        rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr port_thrust_pub_;
+        rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr stbd_thrust_pub_;
 
         std::string mission_file;
         std::string run_command;

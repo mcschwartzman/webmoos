@@ -48,9 +48,12 @@ bool MOOSClient::OnNewMail(MOOSMSG_LIST &NewMail)
     bool   mstr  = msg.IsString();
 #endif
 
-     if(key == "FOO") 
-       cout << "great!";
-
+     if(key == "DESIRED_THRUST"){
+        m_desired_thrust = dval;
+     }
+     else if(key == "DESIRED_RUDDER"){
+        m_desired_rudder = dval;
+     }
      else if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
        reportRunWarning("Unhandled Mail: " + key);
    }
